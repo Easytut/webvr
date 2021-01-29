@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>WebVR!</title>
+    <meta name="description" content="WebVR!">
+    <script src="https://aframe.io/releases/1.1.0/aframe.min.js"></script>
+  
+  </head>
+
+  <style>
+
+
+.overlay{
+  background-color: #fff;
+
+}
+
+.menu-container{
+  /* style="position:absolute; top:0px; left:0px; z-index:1000;" margin="0" */
+  position: relative;
+  top:0px;
+  left:0px;
+  z-index:1000;
+  /* margin:0;
+  padding:0;
+  height: 100vh; */
+
+}
+
+.product-container{
+  /* style="position:absolute; top:0px; left:0px; z-index:1000;" margin="0" */
+  position: relative;
+  top:0px;
+  left:0px;
+  z-index:1000;
+  margin:20px;
+  padding:0;
+  height: 100vh;
+  background-color: rgb(255, 255, 255);
+  border-radius: 1%
+}
+
+ .topnav {
+  overflow: hidden;
+  background-color: rgba(51, 51, 51, 0.438);
+}
+
+.topnav a {
+  float: left;
+  color: #f2f2f2;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+  font-size: 17px;
+}
+
+.topnav a:hover {
+  background-color: #ddd;
+  color: black;
+}
+
+.topnav a.active {
+  background-color: #4CAF50;
+  color: white;
+}
+
+.topnav-right {
+  float: right;
+} 
+
+
+
+/* The Modal (background) */
+.modal {
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  padding-top: 100px; /* Location of the box */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0,0,0); /* Fallback color */
+  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+/* Modal Content */
+.modal-content {
+  background-color: #fefefe;
+  margin: auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%;
+}
+
+/* The Close Button */
+.close {
+  color: #aaaaaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+  color: #000;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+
+/* product page styling */
+
+.container-product {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+}
+
+/* Columns */
+.left-column {
+  margin-left: 50px;
+  width: 50%;
+  position: relative;
+}
+ 
+.right-column {
+  margin-left: 0px;
+  width: 50%;
+  margin-top: 10px;
+}
+
+
+/* Left Column */
+.left-column img {
+  width: 70%;
+  position: absolute;
+  left: 0;
+  top: 20px;
+  opacity: 0;
+  transition: all 0.3s ease;
+}
+ 
+.left-column img.active {
+  opacity: 1;
+}
+
+
+/* Product Description */
+.product-description {
+  border-bottom: 1px solid #E1E8EE;
+  margin: 0 20px 40px 2px;
+  
+}
+.product-description span {
+  font-size: 12px;
+  color: #358ED7;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  text-decoration: none;
+}
+.product-description h1 {
+  font-weight: 300;
+  font-size: 32px;
+  color: #43484D;
+  letter-spacing: -2px;
+}
+.product-description p {
+  font-size: 16px;
+  font-weight: 300;
+  color: #86939E;
+  line-height: 24px;
+}
+
+.product-close{
+    float: right;
+    cursor: pointer;
+}
+
+/* Product Color */
+.product-color {
+  margin-bottom: 30px;
+}
+ 
+.color-choose div {
+  display: inline-block;
+}
+ 
+.cable-choose {
+  margin-bottom: 20px;
+}
+ 
+.cable-choose button {
+  border: 2px solid #E1E8EE;
+  border-radius: 6px;
+  padding: 13px 20px;
+  font-size: 14px;
+  color: #5E6977;
+  background-color: #fff;
+  cursor: pointer;
+  transition: all .5s;
+}
+ 
+.cable-choose button:hover,
+.cable-choose button:active,
+.cable-choose button:focus {
+  border: 2px solid #86939E;
+  outline: none;
+}
+ 
+.cable-config {
+  border-bottom: 1px solid #E1E8EE;
+  margin-bottom: 20px;
+}
+ 
+.cable-config a {
+  color: #358ED7;
+  text-decoration: none;
+  font-size: 12px;
+  position: relative;
+  margin: 10px 0;
+  display: inline-block;
+}
+.cable-config a:before {
+  /* content: &amp;quot;?&amp;quot;; */
+  height: 15px;
+  width: 15px;
+  border-radius: 50%;
+  border: 2px solid rgba(53, 142, 215, 0.5);
+  display: inline-block;
+  text-align: center;
+  line-height: 16px;
+  opacity: 0.5;
+  margin-right: 5px;
+} 
+
+/* Product Price */
+.product-price {
+  display: flex;
+  align-items: center;
+}
+ 
+.product-price span {
+  font-size: 26px;
+  font-weight: 300;
+  color: #43474D;
+  margin-right: 20px;
+}
+ 
+.cart-btn {
+  display: inline-block;
+  background-color: #7DC855;
+  border-radius: 6px;
+  font-size: 16px;
+  color: #FFFFFF;
+  text-decoration: none;
+  padding: 12px 30px;
+  transition: all .5s;
+}
+.cart-btn:hover {
+  background-color: #64af3d;
+}
+
+
+  </style>
+
+  <body>
+
+   
+    <script>
+      AFRAME.registerComponent('set-image1', {
+        init: function(){
+          this.el.addEventListener('click', function(){
+            //set material color to random hex value
+            // var randomColor = '#'+Math.floor(Math.random()*16777215).toString(16);
+            // this.setAttribute( 'material', {color: randomColor} );
+
+            // hide all phones
+            document.getElementById('phonemodel').setAttribute('visible','false')
+            document.getElementById('phonemodel2').setAttribute('visible','false')
+            document.getElementById('phonemodel3').setAttribute('visible','false')
+            document.getElementById('phonemodel4').setAttribute('visible','false')
+            document.getElementById('phonemodel5').setAttribute('visible','false')
+
+            document.getElementById('phonemodel6').setAttribute('visible','false')
+            document.getElementById('phonemodel7').setAttribute('visible','false')
+            document.getElementById('phonemodel8').setAttribute('visible','false')
+            document.getElementById('phonemodel9').setAttribute('visible','false')
+            document.getElementById('phonemodel10').setAttribute('visible','false')
+
+            document.getElementById('phonemodel11').setAttribute('visible','false')
+            document.getElementById('phonemodel12').setAttribute('visible','false')
+
+            document.getElementById('text1').setAttribute('visible','false')
+            document.getElementById('text2').setAttribute('visible','false')
+
+
+
+
+
+
+            document.querySelector('a-sky').setAttribute('src', 'https://raw.githubusercontent.com/Easytut/webvr/main/assets/shop3.jpeg');
+          })
+        }
+      });
+
+
+      AFRAME.registerComponent('set-image2', {
+        init: function(){
+
+          this.el.addEventListener('click', function(){
+            document.querySelector('a-sky').setAttribute('src', 'https://raw.githubusercontent.com/Easytut/webvr/main/assets/shop4.jpeg');
+          
+          
+             // hide all phones
+            document.getElementById('phonemodel').setAttribute('visible','false')
+            document.getElementById('phonemodel2').setAttribute('visible','false')
+            document.getElementById('phonemodel3').setAttribute('visible','false')
+            document.getElementById('phonemodel4').setAttribute('visible','false')
+            document.getElementById('phonemodel5').setAttribute('visible','false')
+
+            document.getElementById('phonemodel6').setAttribute('visible','false')
+            document.getElementById('phonemodel7').setAttribute('visible','false')
+            document.getElementById('phonemodel8').setAttribute('visible','false')
+            document.getElementById('phonemodel9').setAttribute('visible','false')
+            document.getElementById('phonemodel10').setAttribute('visible','false')
+
+            document.getElementById('phonemodel11').setAttribute('visible','false')
+            document.getElementById('phonemodel12').setAttribute('visible','false')
+
+            document.getElementById('text1').setAttribute('visible','false')
+            document.getElementById('text2').setAttribute('visible','false')
+          
+          })
+        }
+      });
+
+
+      AFRAME.registerComponent('set-image3', {
+        init: function(){
+          this.el.addEventListener('click', function(){
+            document.querySelector('a-sky').setAttribute('src', 'https://raw.githubusercontent.com/Easytut/webvr/main/assets/shop2.jpeg');
+
+          
+            
+            // hide all phones
+            document.getElementById('phonemodel').setAttribute('visible','true')
+            document.getElementById('phonemodel2').setAttribute('visible','true')
+            document.getElementById('phonemodel3').setAttribute('visible','true')
+            document.getElementById('phonemodel4').setAttribute('visible','true')
+            document.getElementById('phonemodel5').setAttribute('visible','true')
+
+            document.getElementById('phonemodel6').setAttribute('visible','true')
+            document.getElementById('phonemodel7').setAttribute('visible','true')
+            document.getElementById('phonemodel8').setAttribute('visible','true')
+            document.getElementById('phonemodel9').setAttribute('visible','true')
+            document.getElementById('phonemodel10').setAttribute('visible','true')
+
+            document.getElementById('phonemodel11').setAttribute('visible','true')
+            document.getElementById('phonemodel12').setAttribute('visible','true')
+
+            document.getElementById('text1').setAttribute('visible','true')
+            document.getElementById('text2').setAttribute('visible','true')
+
+
+
+          })
+        }
+      });
+
+
+
+
+      // product page 
+
+      AFRAME.registerComponent('set-page', {
+        init: function(){
+          this.el.addEventListener('click', function(){
+           
+
+            // location.replace("https://stackoverflow.com")
+
+            // document.querySelector('a-sky').setAttribute('src', 'https://raw.githubusercontent.com/Easytut/webvr/main/assets/shop4.jpeg');
+          
+          
+        // hide all phones
+        document.getElementById('phonemodel').setAttribute('visible','false')
+            document.getElementById('phonemodel2').setAttribute('visible','false')
+            document.getElementById('phonemodel3').setAttribute('visible','false')
+            document.getElementById('phonemodel4').setAttribute('visible','false')
+            document.getElementById('phonemodel5').setAttribute('visible','false')
+
+            document.getElementById('phonemodel6').setAttribute('visible','false')
+            document.getElementById('phonemodel7').setAttribute('visible','false')
+            document.getElementById('phonemodel8').setAttribute('visible','false')
+            document.getElementById('phonemodel9').setAttribute('visible','false')
+            document.getElementById('phonemodel10').setAttribute('visible','false')
+
+            document.getElementById('phonemodel11').setAttribute('visible','false')
+            document.getElementById('phonemodel12').setAttribute('visible','false')
+
+            document.getElementById('text1').setAttribute('visible','false')
+            document.getElementById('text2').setAttribute('visible','false')
+
+            modal.style.display = "block";
+
+          
+          })
+        }
+      });
+
+
+    </script>
+
+    
+<div style="position:relative;">
+    
+    <a-scene cursor="rayOrigin: mouse" raycaster="objects: .clickable" renderer="colorManagement: true;">
+      <a-assets>
+        <img id="city" crossorigin="anonymous" src="https://raw.githubusercontent.com/Easytut/webvr/main/assets/shop.jpeg">
+      
+     
+      </a-assets>
+
+        <a-sky id="skybox" radius="9" src="#city"></a-sky>
+
+        <!-- exit -->
+         <a-entity class="clickable" set-image1 rotation="-80 0 90" geometry="primitive: ring; radiusInner: 0.3; radiusOuter: 0.6" position="0 -0.95 -7" material="side: double"></a-entity>
+         <!-- last -->
+         <a-entity class="clickable" set-image2 rotation="80 0 90" geometry="primitive: ring; radiusInner: 0.3; radiusOuter: 0.6" position="-3.5 -1.5 6.9" material="side: double"></a-entity>
+         <!-- rollex having 3d-->
+         <a-entity class="clickable" set-image3 rotation="80 0 90" geometry="primitive: ring; radiusInner: 0.3; radiusOuter: 0.6" position="-4 -0.55 0" material="side: double"></a-entity>
+
+
+      
+         <a-assets>
+         
+          <a-asset-item id="phoneModel" src="https://raw.githubusercontent.com/jyotivasu/sample_project/master/gltfcombo/mobile3.gltf"></a-asset-item>
+          <a-asset-item id="mobModel" src="https://raw.githubusercontent.com/jyotivasu/sample_project/master/gltfcombo/mob.glb"></a-asset-item>
+        </a-assets>
+        <a-entity id="phonemodel" visible="false" gltf-model="#phoneModel" position="-2 0 1" modify-materials scale="0.1 0.1 0.1" rotation="0 90 0"></a-entity>
+        <a-entity id="phonemodel2" visible="false" gltf-model="#phoneModel" position="-3 0 1" modify-materials scale="0.1 0.1 0.1" rotation="0 90 0"></a-entity>
+        <a-entity id="phonemodel3" visible="false" gltf-model="#phoneModel" position="-4 0 1" modify-materials scale="0.1 0.1 0.1" rotation="0 90 0"></a-entity>
+        <a-entity id="phonemodel4" visible="false" gltf-model="#phoneModel" position="-5 0 1" modify-materials scale="0.1 0.1 0.1" rotation="0 90 0"></a-entity>
+        <a-entity id="phonemodel5" visible="false" gltf-model="#phoneModel" position="-6 0 1" modify-materials scale="0.1 0.1 0.1" rotation="0 90 0"></a-entity>
+        
+        <a-entity id="phonemodel6" visible="false" gltf-model="#phoneModel" position="-2 0 -1" modify-materials scale="0.1 0.1 0.1" rotation="0 90 0"></a-entity>
+        <a-entity id="phonemodel7" visible="false" gltf-model="#phoneModel" position="-3 0 -1" modify-materials scale="0.1 0.1 0.1" rotation="0 90 0"></a-entity>
+        <a-entity id="phonemodel8" visible="false" gltf-model="#phoneModel" position="-4 0 -1" modify-materials scale="0.1 0.1 0.1" rotation="0 90 0"></a-entity>
+        <a-entity id="phonemodel9" visible="false" gltf-model="#phoneModel" position="-5 0 -1" modify-materials scale="0.1 0.1 0.1" rotation="0 90 0"></a-entity>
+        <a-entity id="phonemodel10" visible="false" gltf-model="#phoneModel" position="-6 0 -1" modify-materials scale="0.1 0.1 0.1" rotation="0 90 0"></a-entity>
+
+        <a-entity id="phonemodel11" class="clickable" set-page visible="false" gltf-model="#mobModel" position="-2.4 0 -2" modify-materials scale="0.006 0.006 0.006" rotation="0 90 0"></a-entity>
+        <!-- apple -->
+        <a-entity id="phonemodel12" class="clickable" set-page visible="false" gltf-model="#mobModel" position="-2.7 0 2" modify-materials scale="0.01 0.01 0.01" rotation="0 90 0"></a-entity>
+        
+        <a-entity id="text1" visible="false" text="value: Samsung" position="-1 1 -3" scale="4 4 4" rotation="0 90 0"></a-entity>
+        <a-entity id="text2" visible="false" text="value: Apple" position="-1 1 -0.5" scale="4 4 4" rotation="0 90 0"></a-entity>
+       
+        <!-- gltf-model="#phoneModel" -->
+
+    </a-scene>
+
+    <div class="menu-container">
+   
+       <div class="topnav">
+        <a class="active" href="index.html">Home</a>
+        <a href="product.html">Offers</a>
+        <a href="vrsample.html">Demo</a>
+        <!-- <div class="topnav-right"> -->
+          <!-- <a href="#search">Search</a> -->
+          <!-- <a href="#about">About</a> -->
+        <!-- </div> -->
+      </div>
+      <!-- Trigger/Open The Modal -->
+      <!-- <button id="myBtn">Product Page</button> -->
+
+
+      <!-- product page starts here -->
+
+<!-- The Modal -->
+<div id="myModal" class="modal">
+
+  <!-- Modal content -->
+  <div class="modal-content">
+    <!-- <span class="close"> <img src="https://img.icons8.com/ios-glyphs/30/000000/macos-close.png"/>   &times;</span> -->
+    <img src="https://img.icons8.com/ios-glyphs/30/000000/macos-close.png"  class="close"/>
+    <main class="container-product">
+ 
+      <!-- Left Column -->
+      <div class="left-column">
+        <img data-image="black" src="https://raw.githubusercontent.com/jyotivasu/Web/master/Mob/product1.jpg" alt="">
+        <img data-image="blue" src="https://raw.githubusercontent.com/jyotivasu/Web/master/Mob/product2.jpg" alt="">
+        <img data-image="red" class="active" src="https://raw.githubusercontent.com/jyotivasu/Web/master/Mob/product1.jpg" alt="">
+      </div>
+     
+     
+      <!-- Right Column -->
+      <div class="right-column">
+     
+        <!-- Product Description -->
+        <div class="product-description">
+          <h1>Apple iPhone 11 Pro</h1>
+          <p>iPhone 11 Pro is powered by a hexa-core Apple A13 Bionic processor. It comes with 4GB of RAM. The iPhone 11 Pro runs iOS 13.</p>
+        </div>
+     
+        <!-- Product Configuration -->
+        <div class="product-configuration">
+     
+          <!-- Product Color -->
+          <div class="product-color">
+            <span>Color</span>
+     
+            <div class="color-choose">
+              <div>
+                <input data-image="red" type="radio" id="red" name="color" value="red" checked>
+                <label for="red"><span></span></label>
+              </div>
+              <div>
+                <input data-image="blue" type="radio" id="blue" name="color" value="blue">
+                <label for="blue"><span></span></label>
+              </div>
+              <div>
+                <input data-image="black" type="radio" id="black" name="color" value="black">
+                <label for="black"><span></span></label>
+              </div>
+            </div>
+     
+          </div>
+     
+          <!-- Cable Configuration -->
+          <div class="cable-config">
+            <!-- <span>Cable configuration</span> -->
+     
+            <div class="cable-choose">
+              <a href="threed.html"><button>3D View</button></a>
+              <a href="arproduct.html"><button>AR View</button></a>
+              <button>Add To Cart</button>
+            </div>
+     
+            <a href="https://raw.githubusercontent.com/AR-js-org/AR.js/master/data/images/hiro.png">How to use AR view? Download scanner image</a>
+          </div>
+        </div>
+     
+        <!-- Product Pricing -->
+        <div class="product-price">
+          <span>148$</span>
+          <a href="#" class="cart-btn">Add to cart</a>
+        </div>
+      </div>
+    </main>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+
+</div>
+
+
+    </div>
+
+
+
+   
+
+  
+
+
+
+
+
+</div>
+
+
+
+
+<script>
+  // Get the modal
+  var modal = document.getElementById("myModal");
+  
+  // Get the button that opens the modal
+  var btn = document.getElementById("myBtn");
+  
+  // Get the <span> element that closes the modal
+  var span = document.getElementsByClassName("close")[0];
+  
+  // When the user clicks the button, open the modal 
+  btn.onclick = function() {
+    modal.style.display = "block";
+  }
+  
+  // When the user clicks on <span> (x), close the modal
+  span.onclick = function() {
+    modal.style.display = "none";
+  }
+  
+  // When the user clicks anywhere outside of the modal, close it
+  window.onclick = function(event) {
+    if (event.target == modal) {
+      modal.style.display = "none";
+    }
+  }
+  </script>
+     
+ 
+  </body>
+</html>
